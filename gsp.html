@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSP คิดเลขเร็ว (ระดับประถมศึกษา)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* GSP Number Orbs */
+        .gsp-orb {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 
+                0 12px 24px -6px rgba(0, 0, 0, 0.45),
+                inset 0 -6px 12px rgba(0, 0, 0, 0.25),
+                inset 0 6px 12px rgba(255, 255, 255, 0.45);
+        }
+
+        .gsp-target-box {
+            box-shadow: 
+                0 16px 32px -8px rgba(0, 0, 0, 0.5),
+                inset 0 4px 15px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Rolling Effect */
+        @keyframes bounce-roll {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.05); }
+        }
+        .rolling-active {
+            animation: bounce-roll 0.16s infinite;
+        }
+
+        /* Exponent Superscript */
+        sup.math-exp {
+            font-size: 0.65em;
+            vertical-align: super;
+            font-weight: 900;
+            color: #fbbf24;
+            margin-left: 2px;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .animate-pop {
+            animation: popIn 0.25s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 flex items-center justify-center min-h-screen">
+
+    <!-- =======================================================================
+         SCREEN 1: START MENU (หน้าแรกเลือกเลเวลและรูปแบบโจทย์อย่างง่าย)
+    ======================================================================== -->
+    <main id="startScreen" class="max-w-3xl w-full bg-slate-800/95 border-2 border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl animate-pop">
+        
+        <!-- Title Header -->
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 text-3xl font-black mx-auto mb-3 shadow-lg shadow-orange-500/20">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                โปรแกรมสุ่มคิดเลขเร็ว GSP
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base mt-1">
+                เลือกระดับที่ต้องการฝึกซ้อม แล้วกดเข้าสู่กระดานได้เลย
+            </p>
+        </div>
+
+        <!-- Step 1: Choose Level -->
+        <div class="mb-6">
+            <label class="block text-sm sm:text-base font-bold text-amber-300 mb-3">
+                1. เลือกระดับความยาก (Level)
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Level 1 Card -->
+                <button id="cardLevel1" onclick="selectStartLevel(1)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-emerald-500/20 border-emerald-400 shadow-lg">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-3 py-1 rounded-full bg-emerald-400 text-slate-950 font-extrabold text-xs">LEVEL 1</span>
+                            <i id="checkLevel1" class="fa-solid fa-circle-check text-emerald-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-white">โหมดพื้นฐาน</h3>
+                        <p class="text-sm text-slate-300 mt-1">ใช้เฉพาะ บวก (+) ลบ (−) คูณ (×) หาร (÷)</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-emerald-300 tracking-widest">
+                        + &nbsp; − &nbsp; × &nbsp; ÷
+                    </div>
+                </button>
+
+                <!-- Level 2 Card -->
+                <button id="cardLevel2" onclick="selectStartLevel(2)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-slate-900/60 border-slate-700 hover:border-slate-500">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-extrabold text-xs">LEVEL 2</span>
+                            <i id="checkLevel2" class="fa-regular fa-circle text-slate-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-white">โหมดเพิ่มยกกำลังสอง-สาม</h3>
+                        <p class="text-sm text-slate-300 mt-1">มีตัวช่วยยกกำลังสอง (a²) และกำลังสาม (a³)</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-amber-300 tracking-widest">
+                        + − × ÷ และ a² , a³
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Choose Digit Count (4 or 5 Numbers) -->
+        <div class="mb-6">
+            <label class="block text-sm sm:text-base font-bold text-sky-300 mb-3">
+                2. เลือกจำนวนตัวเลขโจทย์
+            </label>
+            <div class="grid grid-cols-2 gap-4">
+                <button id="cardDigit4" onclick="selectStartDigits(4)" class="p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md">
+                    <div class="text-2xl sm:text-3xl font-black">4 ตัวเลข</div>
+                    <div class="text-xs sm:text-sm text-sky-200 mt-1">ผลลัพธ์ 2 หลัก (10 – 99)</div>
+                </button>
+
+                <button id="cardDigit5" onclick="selectStartDigits(5)" class="p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500">
+                    <div class="text-2xl sm:text-3xl font-black">5 ตัวเลข</div>
+                    <div class="text-xs sm:text-sm text-slate-400 mt-1">ผลลัพธ์ 3 หลัก (100 – 999)</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Choose Timer -->
+        <div class="mb-8">
+            <label class="block text-sm sm:text-base font-bold text-purple-300 mb-3">
+                3. เวลาในการคิดต่อข้อ
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <button onclick="selectStartTimer(30)" id="timerBtn30" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                    30 วินาที
+                </button>
+                <button onclick="selectStartTimer(45)" id="timerBtn45" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                    45 วินาที
+                </button>
+                <button onclick="selectStartTimer(60)" id="timerBtn60" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white">
+                    60 วินาที
+                </button>
+                <button onclick="selectStartTimer(0)" id="timerBtn0" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                    ไม่จับเวลา
+                </button>
+            </div>
+        </div>
+
+        <!-- Big Enter Game Button -->
+        <button onclick="enterGameBoard()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xl sm:text-2xl shadow-xl shadow-emerald-500/25 active:scale-98 transition flex items-center justify-center gap-3">
+            <i class="fa-solid fa-play"></i>
+            <span>เริ่มเข้าสู่กระดานสุ่มตัวเลข</span>
+        </button>
+
+    </main>
+
+
+    <!-- =======================================================================
+         SCREEN 2: SIMPLE & CLEAN GSP GAME BOARD (หน้ากระดานสุ่มตัวเลข)
+    ======================================================================== -->
+    <main id="boardScreen" class="hidden max-w-5xl w-full space-y-5 animate-pop">
+
+        <!-- Top Simple Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-800/90 border border-slate-700 rounded-2xl px-4 py-3 shadow-lg">
+            <!-- Back to Level Select -->
+            <button onclick="backToStartScreen()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>เปลี่ยนเลเวล / ตั้งค่า</span>
+            </button>
+
+            <!-- Current Mode Badge -->
+            <div class="flex items-center gap-2">
+                <span id="boardLevelBadge" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm">
+                    Level 1: โหมดพื้นฐาน
+                </span>
+                <button id="btnRefTable" onclick="toggleRefTable()" class="hidden px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 font-bold text-sm transition">
+                    <i class="fa-solid fa-table-cells mr-1"></i> ดูค่ากำลัง 2, 3
+                </button>
+            </div>
+
+            <!-- Sound & Custom Problem -->
+            <div class="flex items-center gap-2">
+                <button onclick="openCustomModal()" class="px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs sm:text-sm font-medium transition" title="ครูตั้งโจทย์เอง">
+                    <i class="fa-solid fa-keyboard mr-1"></i> ตั้งโจทย์เอง
+                </button>
+                <button id="btnSound" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 text-emerald-400 flex items-center justify-center transition">
+                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Optional Reference Table for Level 2 (Squares & Cubes) -->
+        <div id="refTableBox" class="hidden bg-slate-800/95 border-2 border-amber-500/40 rounded-2xl p-4 shadow-lg animate-pop">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-bold text-amber-300"><i class="fa-solid fa-star mr-1"></i> ตารางช่วยจำค่ากำลังสอง (a²) และกำลังสาม (a³)</span>
+                <button onclick="toggleRefTable()" class="text-xs text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i> ซ่อนตาราง</button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm">
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">2² = <b class="text-sky-300">4</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">3² = <b class="text-sky-300">9</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">4² = <b class="text-sky-300">16</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">5² = <b class="text-sky-300">25</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">6² = <b class="text-sky-300">36</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">7² = <b class="text-sky-300">49</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">8² = <b class="text-sky-300">64</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">9² = <b class="text-sky-300">81</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">2³ = <b class="text-amber-300">8</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">3³ = <b class="text-amber-300">27</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">4³ = <b class="text-amber-300">64</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">5³ = <b class="text-amber-300">125</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">6³ = <b class="text-amber-300">216</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">7³ = <b class="text-amber-300">343</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">8³ = <b class="text-amber-300">512</b></div>
+                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">9³ = <b class="text-amber-300">729</b></div>
+            </div>
+        </div>
+
+        <!-- MAIN GSP BOARD -->
+        <div class="bg-slate-800 border-4 border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            
+            <!-- Timer Bar at Top of Board -->
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
+                <div class="text-sm sm:text-base font-bold text-slate-300" id="simpleRuleLabel">
+                    โจทย์ 4 ตัวเลข (ใช้ตัวเลขให้ครบทุกตัว)
+                </div>
+
+                <!-- Large Easy-to-Read Timer -->
+                <div class="flex items-center gap-3 bg-slate-950 px-5 py-2 rounded-2xl border border-slate-700">
+                    <i id="timerIcon" class="fa-solid fa-clock text-emerald-400 text-xl"></i>
+                    <span id="timerDisplay" class="font-mono text-3xl sm:text-4xl font-black text-emerald-400">60</span>
+                    <span id="timerUnitLabel" class="text-xs sm:text-sm text-slate-400">วินาที</span>
+                    <button id="btnPause" onclick="togglePauseTimer()" class="ml-2 w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center" title="หยุดเวลาชั่วคราว">
+                        <i id="pauseIcon" class="fa-solid fa-pause text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Numbers & Target Answer Display -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center py-4">
+                
+                <!-- Number Orbs -->
+                <div class="lg:col-span-7 flex flex-col items-center">
+                    <span class="text-xs sm:text-sm font-bold text-slate-400 mb-3">ตัวเลขที่สุ่มได้</span>
+                    <div id="numbersOrbContainer" class="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+                        <!-- Orbs injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Equals Sign -->
+                <div class="lg:col-span-1 flex items-center justify-center">
+                    <span class="text-4xl sm:text-5xl font-black text-slate-500">=</span>
+                </div>
+
+                <!-- Target Box -->
+                <div class="lg:col-span-4 flex flex-col items-center">
+                    <span class="text-xs sm:text-sm font-bold text-amber-400 mb-3">คำตอบที่ต้องการ</span>
+                    <div class="gsp-target-box w-52 sm:w-60 h-32 sm:h-36 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-600 p-2 flex items-center justify-center">
+                        <div class="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center">
+                            <span id="targetNumberDisplay" class="text-6xl sm:text-7xl font-black text-amber-300 tracking-tight">
+                                45
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Control Buttons (Clean & Big) -->
+            <div class="mt-8 pt-6 border-t border-slate-700 flex flex-wrap items-center justify-center gap-4">
+                
+                <!-- 1. Big Spin Button -->
+                <button id="btnSpinRandom" onclick="startRandomSpin()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/25 active:scale-95 transition flex items-center gap-3">
+                    <i class="fa-solid fa-shuffle text-2xl"></i>
+                    <span>สุ่มตัวเลขชุดใหม่</span>
+                </button>
+
+                <!-- 2. Guideline Hint Button -->
+                <button onclick="showHintBox()" class="px-5 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base sm:text-lg shadow-md active:scale-95 transition flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-300"></i>
+                    <span>ใบ้แนวคิด</span>
+                </button>
+
+                <!-- 3. Show Solution Button -->
+                <button onclick="showSolutionBox()" class="px-5 py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-base sm:text-lg shadow-md active:scale-95 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>ดูเฉลย</span>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             HINT BOX (แสดงเมื่อกดปุ่ม "ใบ้แนวคิด")
+        ==================================================================== -->
+        <div id="hintBox" class="hidden bg-indigo-950/90 border-2 border-indigo-400 rounded-3xl p-6 shadow-xl animate-pop">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg sm:text-xl font-extrabold text-indigo-200 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-300 text-2xl"></i>
+                    ไกด์ไลน์ช่วยคิด (ลองทำตามขั้นแรกนี้ดูนะ!)
+                </h3>
+                <button onclick="document.getElementById('hintBox').classList.add('hidden')" class="text-indigo-300 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="hintContent" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             SOLUTION BOX (แสดงเมื่อกดปุ่ม "ดูเฉลย")
+        ==================================================================== -->
+        <div id="solutionBox" class="hidden bg-slate-800 border-4 border-amber-400 rounded-3xl p-6 shadow-2xl animate-pop">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-700">
+                <h3 class="text-xl sm:text-2xl font-extrabold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    เฉลยวิธีคิดทีละขั้นตอน
+                </h3>
+                <span id="solutionMethodBadge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-bold">
+                    คำตอบตรงเป้าหมาย
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Step-by-Step Easy Cards (7 cols) -->
+                <div class="lg:col-span-7 space-y-3" id="stepByStepContainer">
+                    <!-- Steps injected by JS -->
+                </div>
+
+                <!-- Summary Equation & Other Ways (5 cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-4 text-center">
+                        <div class="text-xs text-slate-400 font-bold mb-1">ประโยคสัญลักษณ์รวม</div>
+                        <div id="fullEquationText" class="text-2xl sm:text-3xl font-black text-white py-1"></div>
+                    </div>
+
+                    <div class="bg-slate-900/80 border border-slate-700 rounded-2xl p-4">
+                        <div class="text-xs font-bold text-sky-300 mb-2">
+                            <i class="fa-solid fa-code-branch mr-1"></i> วิธีคิดแบบอื่นๆ (คลิกเพื่อสลับดู)
+                        </div>
+                        <div id="otherWaysList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                            <!-- Alternative buttons -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- =======================================================================
+         POPUP MODAL WHEN TIME IS UP (กรอบถามเมื่อหมดเวลา)
+    ======================================================================== -->
+    <div id="timeUpModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-800 border-4 border-amber-400 rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl animate-pop">
+            <div class="w-20 h-20 rounded-full bg-amber-500/20 border-2 border-amber-400 text-amber-300 text-4xl flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">
+                หมดเวลาแล้วครับ!
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base mb-6">
+                ต้องการให้เปิดเฉลยวิธีคิดเลย หรือดูแค่ใบ้แนวคิดก่อนดีครับ?
+            </p>
+
+            <div class="space-y-3">
+                <button onclick="handleTimeUpChoice('solution')" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-lg shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>แสดงเฉลยวิธีคิดเลย</span>
+                </button>
+
+                <button onclick="handleTimeUpChoice('hint')" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-300"></i>
+                    <span>ขอดูใบ้แนวคิดนิดนึงก่อน</span>
+                </button>
+
+                <button onclick="handleTimeUpChoice('continue')" class="w-full py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm transition">
+                    ยังไม่ดูเฉลย (ขอคิดต่อเองอีกหน่อย)
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =======================================================================
+         MODAL: TEACHER CUSTOM INPUT (ตั้งโจทย์เอง)
+    ======================================================================== -->
+    <div id="customModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-800 border-2 border-slate-600 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-pop">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-white">ตั้งตัวเลขโจทย์และคำตอบเอง</h3>
+                <button onclick="closeCustomModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">ตัวเลขโดด 4 หรือ 5 ตัว (เว้นวรรค เช่น 2 4 5 8)</label>
+                    <input id="customNumbersInput" type="text" placeholder="เช่น 2 3 5 8" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-white font-bold tracking-widest">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">คำตอบเป้าหมาย</label>
+                    <input id="customTargetInput" type="number" placeholder="เช่น 69" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-amber-300 font-bold text-lg">
+                </div>
+                <div id="customModalError" class="hidden text-xs text-rose-400 bg-rose-950/60 border border-rose-500/40 rounded-lg p-2.5"></div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closeCustomModal()" class="px-4 py-2 rounded-xl bg-slate-700 text-slate-300 text-sm font-bold">ยกเลิก</button>
+                    <button onclick="applyCustomProblem()" class="px-5 py-2 rounded-xl bg-emerald-500 text-slate-950 text-sm font-black">ตกลง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        /********************************************************************
+         * 1. STATE & SETTINGS
+         ********************************************************************/
+        const state = {
+            level: 1,            // 1 = Basic (+,-,*,/), 2 = With Exponents (a², a³)
+            digitCount: 4,       // 4 or 5 numbers
+            timerDuration: 60,   // seconds (0 = no timer)
+            timeLeft: 60,
+            timerInterval: null,
+            isPaused: false,
+            isRolling: false,
+            soundEnabled: true,
+
+            numbers: [2, 4, 6, 8],
+            target: 56,
+            allSolutions: [],
+            selectedSolutionIndex: 0
+        };
+
+        const ORB_COLORS = [
+            'from-rose-500 to-red-600 border-rose-300',
+            'from-sky-500 to-blue-600 border-sky-300',
+            'from-emerald-500 to-green-600 border-emerald-300',
+            'from-purple-500 to-indigo-600 border-purple-300',
+            'from-amber-500 to-orange-600 border-amber-300'
+        ];
+
+        /********************************************************************
+         * 2. SOUND EFFECTS (WEB AUDIO API)
+         ********************************************************************/
+        let audioCtx = null;
+        function playTone(freq, type = 'sine', duration = 0.08, gainVal = 0.12) {
+            if (!state.soundEnabled) return;
+            try {
+                if (!audioCtx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) audioCtx = new AudioContext();
+                }
+                if (!audioCtx) return;
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            icon.className = state.soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-slate-400';
+        }
+
+        /********************************************************************
+         * 3. START SCREEN SELECTION CONTROLS
+         ********************************************************************/
+        function selectStartLevel(lvl) {
+            state.level = lvl;
+            const c1 = document.getElementById('cardLevel1');
+            const c2 = document.getElementById('cardLevel2');
+            const chk1 = document.getElementById('checkLevel1');
+            const chk2 = document.getElementById('checkLevel2');
+
+            if (lvl === 1) {
+                c1.className = 'text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-emerald-500/20 border-emerald-400 shadow-lg';
+                c2.className = 'text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-slate-900/60 border-slate-700 hover:border-slate-500';
+                chk1.className = 'fa-solid fa-circle-check text-emerald-400 text-2xl';
+                chk2.className = 'fa-regular fa-circle text-slate-500 text-2xl';
+            } else {
+                c2.className = 'text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-amber-500/20 border-amber-400 shadow-lg';
+                c1.className = 'text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-slate-900/60 border-slate-700 hover:border-slate-500';
+                chk2.className = 'fa-solid fa-circle-check text-amber-400 text-2xl';
+                chk1.className = 'fa-regular fa-circle text-slate-500 text-2xl';
+            }
+            playTone(520, 'sine', 0.08);
+        }
+
+        function selectStartDigits(count) {
+            state.digitCount = count;
+            const d4 = document.getElementById('cardDigit4');
+            const d5 = document.getElementById('cardDigit5');
+
+            if (count === 4) {
+                d4.className = 'p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
+                d5.className = 'p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
+            } else {
+                d5.className = 'p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
+                d4.className = 'p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
+            }
+            playTone(580, 'sine', 0.08);
+        }
+
+        function selectStartTimer(sec) {
+            state.timerDuration = sec;
+            [30, 45, 60, 0].forEach(val => {
+                const btn = document.getElementById('timerBtn' + val);
+                if (val === sec) {
+                    btn.className = 'py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white';
+                } else {
+                    btn.className = 'py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300';
+                }
+            });
+            playTone(640, 'sine', 0.08);
+        }
+
+        function enterGameBoard() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('boardScreen').classList.remove('hidden');
+
+            // Configure Board Header Badge & Level 2 Reference Button
+            const badge = document.getElementById('boardLevelBadge');
+            const btnRef = document.getElementById('btnRefTable');
+            const ruleLabel = document.getElementById('simpleRuleLabel');
+
+            if (state.level === 1) {
+                badge.className = 'px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm';
+                badge.textContent = 'Level 1: โหมดพื้นฐาน (+ − × ÷)';
+                btnRef.classList.add('hidden');
+                document.getElementById('refTableBox').classList.add('hidden');
+                ruleLabel.textContent = `โจทย์ ${state.digitCount} ตัวเลข • ใช้ + , − , × , ÷ ให้ได้คำตอบ`;
+            } else {
+                badge.className = 'px-3.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-sm';
+                badge.textContent = 'Level 2: โหมดยกกำลังสอง-สาม (a², a³)';
+                btnRef.classList.remove('hidden');
+                ruleLabel.textContent = `โจทย์ ${state.digitCount} ตัวเลข • ใช้ + , − , × , ÷ และกำลังสอง (a²) หรือกำลังสาม (a³)`;
+            }
+
+            startRandomSpin();
+        }
+
+        function backToStartScreen() {
+            clearInterval(state.timerInterval);
+            document.getElementById('boardScreen').classList.add('hidden');
+            document.getElementById('timeUpModal').classList.add('hidden');
+            document.getElementById('timeUpModal').classList.remove('flex');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        function toggleRefTable() {
+            document.getElementById('refTableBox').classList.toggle('hidden');
+        }
+
+        /********************************************************************
+         * 4. SOLVER ENGINE (LEVEL 1 & LEVEL 2 WITH STRICT a², a³)
+         ********************************************************************/
+        function solveQuickMath(numbers, target, allowExponents) {
+            const exactSolutions = new Map();
+            let nearestMap = new Map();
+            let minDiff = Infinity;
+
+            const initialItems = numbers.map(n => ({
+                val: n,
+                exprPlain: String(n),
+                exprHtml: String(n),
+                steps: [],
+                usesExponent: false,
+                isAtom: true
+            }));
+
+            function search(items) {
+                if (items.length === 1) {
+                    const item = items[0];
+                    if (!Number.isFinite(item.val) || Math.abs(item.val - Math.round(item.val)) > 1e-6) return;
+                    const finalVal = Math.round(item.val);
+                    const diff = Math.abs(finalVal - target);
+
+                    const solObj = {
+                        resultValue: finalVal,
+                        diff: diff,
+                        exprPlain: item.exprPlain,
+                        exprHtml: item.exprHtml,
+                        steps: item.steps,
+                        usesExponent: item.usesExponent
+                    };
+
+                    if (diff === 0) {
+                        if (!exactSolutions.has(item.exprPlain)) {
+                            exactSolutions.set(item.exprPlain, solObj);
+                        }
+                    } else if (exactSolutions.size === 0) {
+                        if (diff < minDiff) {
+                            minDiff = diff;
+                            nearestMap.clear();
+                            nearestMap.set(item.exprPlain, solObj);
+                        } else if (diff === minDiff && nearestMap.size < 10) {
+                            nearestMap.set(item.exprPlain, solObj);
+                        }
+                    }
+                    return;
+                }
+
+                if (exactSolutions.size >= 35) return;
+
+                const len = items.length;
+                for (let i = 0; i < len; i++) {
+                    for (let j = i + 1; j < len; j++) {
+                        const rest = [];
+                        for (let k = 0; k < len; k++) {
+                            if (k !== i && k !== j) rest.push(items[k]);
+                        }
+                        const candidates = getPairOps(items[i], items[j], allowExponents);
+                        for (const cand of candidates) {
+                            rest.push(cand);
+                            search(rest);
+                            rest.pop();
+                        }
+                    }
+                }
+            }
+
+            search(initialItems);
+
+            let results = exactSolutions.size > 0
+                ? Array.from(exactSolutions.values())
+                : Array.from(nearestMap.values());
+
+            results.sort((a, b) => {
+                if (allowExponents) {
+                    if (a.usesExponent && !b.usesExponent) return -1;
+                    if (!a.usesExponent && b.usesExponent) return 1;
+                }
+                return a.exprPlain.length - b.exprPlain.length;
+            });
+
+            return results;
+        }
+
+        function getPairOps(A, B, allowExponents) {
+            const list = [];
+            const aVal = A.val;
+            const bVal = B.val;
+            const wrapP = x => x.isAtom ? x.exprPlain : `(${x.exprPlain})`;
+            const wrapH = x => x.isAtom ? x.exprHtml : `(${x.exprHtml})`;
+            const baseSteps = [...A.steps, ...B.steps];
+            const baseExp = A.usesExponent || B.usesExponent;
+
+            // Addition
+            {
+                const f = aVal >= bVal ? A : B;
+                const s = aVal >= bVal ? B : A;
+                const r = f.val + s.val;
+                list.push({
+                    val: r,
+                    exprPlain: `${wrapP(f)} + ${wrapP(s)}`,
+                    exprHtml: `${wrapH(f)} + ${wrapH(s)}`,
+                    steps: [...baseSteps, { lhsHtml: `${f.val} + ${s.val}`, res: r, desc: `นำ ${f.val} บวก ${s.val}` }],
+                    usesExponent: baseExp,
+                    isAtom: false
+                });
+            }
+
+            // Subtraction (non-negative)
+            if (aVal >= bVal) {
+                const r = aVal - bVal;
+                list.push({
+                    val: r,
+                    exprPlain: `${wrapP(A)} - ${wrapP(B)}`,
+                    exprHtml: `${wrapH(A)} − ${wrapH(B)}`,
+                    steps: [...baseSteps, { lhsHtml: `${aVal} − ${bVal}`, res: r, desc: `นำ ${aVal} ลบด้วย ${bVal}` }],
+                    usesExponent: baseExp,
+                    isAtom: false
+                });
+            } else {
+                const r = bVal - aVal;
+                list.push({
+                    val: r,
+                    exprPlain: `${wrapP(B)} - ${wrapP(A)}`,
+                    exprHtml: `${wrapH(B)} − ${wrapH(A)}`,
+                    steps: [...baseSteps, { lhsHtml: `${bVal} − ${aVal}`, res: r, desc: `นำ ${bVal} ลบด้วย ${aVal}` }],
+                    usesExponent: baseExp,
+                    isAtom: false
+                });
+            }
+
+            // Multiplication
+            {
+                const f = aVal >= bVal ? A : B;
+                const s = aVal >= bVal ? B : A;
+                const r = f.val * s.val;
+                if (r <= 4000) {
+                    list.push({
+                        val: r,
+                        exprPlain: `${wrapP(f)} × ${wrapP(s)}`,
+                        exprHtml: `${wrapH(f)} × ${wrapH(s)}`,
+                        steps: [...baseSteps, { lhsHtml: `${f.val} × ${s.val}`, res: r, desc: `นำ ${f.val} คูณ ${s.val}` }],
+                        usesExponent: baseExp,
+                        isAtom: false
+                    });
+                }
+            }
+
+            // Exact Division
+            if (bVal !== 0 && aVal % bVal === 0) {
+                const r = aVal / bVal;
+                list.push({
+                    val: r,
+                    exprPlain: `${wrapP(A)} ÷ ${wrapP(B)}`,
+                    exprHtml: `${wrapH(A)} ÷ ${wrapH(B)}`,
+                    steps: [...baseSteps, { lhsHtml: `${aVal} ÷ ${bVal}`, res: r, desc: `นำ ${aVal} หารด้วย ${bVal}` }],
+                    usesExponent: baseExp,
+                    isAtom: false
+                });
+            }
+            if (aVal !== 0 && bVal % aVal === 0 && aVal !== bVal) {
+                const r = bVal / aVal;
+                list.push({
+                    val: r,
+                    exprPlain: `${wrapP(B)} ÷ ${wrapP(A)}`,
+                    exprHtml: `${wrapH(B)} ÷ ${wrapH(A)}`,
+                    steps: [...baseSteps, { lhsHtml: `${bVal} ÷ ${aVal}`, res: r, desc: `นำ ${bVal} หารด้วย ${aVal}` }],
+                    usesExponent: baseExp,
+                    isAtom: false
+                });
+            }
+
+            // Exponents ONLY for Level 2 and strictly power 2 or 3
+            if (allowExponents) {
+                if ((bVal === 2 || bVal === 3) && aVal >= 2 && aVal <= 10) {
+                    const r = Math.pow(aVal, bVal);
+                    list.push({
+                        val: r,
+                        exprPlain: `${wrapP(A)}^${wrapP(B)}`,
+                        exprHtml: `${wrapH(A)}<sup class="math-exp">${wrapH(B)}</sup>`,
+                        steps: [...baseSteps, {
+                            lhsHtml: `${aVal}<sup class="math-exp">${bVal}</sup>`,
+                            res: r,
+                            desc: `${aVal} ยกกำลัง ${bVal} (${bVal === 2 ? `${aVal}×${aVal}` : `${aVal}×${aVal}×${aVal}`})`
+                        }],
+                        usesExponent: true,
+                        isAtom: true
+                    });
+                }
+                if ((aVal === 2 || aVal === 3) && bVal >= 2 && bVal <= 10 && aVal !== bVal) {
+                    const r = Math.pow(bVal, aVal);
+                    list.push({
+                        val: r,
+                        exprPlain: `${wrapP(B)}^${wrapP(A)}`,
+                        exprHtml: `${wrapH(B)}<sup class="math-exp">${wrapH(A)}</sup>`,
+                        steps: [...baseSteps, {
+                            lhsHtml: `${bVal}<sup class="math-exp">${aVal}</sup>`,
+                            res: r,
+                            desc: `${bVal} ยกกำลัง ${aVal} (${aVal === 2 ? `${bVal}×${bVal}` : `${bVal}×${bVal}×${bVal}`})`
+                        }],
+                        usesExponent: true,
+                        isAtom: true
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        /********************************************************************
+         * 5. RANDOM GENERATOR & GSP SPIN
+         ********************************************************************/
+        function randDigits(count) {
+            return Array.from({ length: count }, () => Math.floor(Math.random() * 9) + 1);
+        }
+
+        function randTarget(count) {
+            return count === 4
+                ? Math.floor(Math.random() * 90) + 10
+                : Math.floor(Math.random() * 900) + 100;
+        }
+
+        function generateProblem() {
+            const isLvl2 = state.level === 2;
+            for (let i = 0; i < 80; i++) {
+                const nums = randDigits(state.digitCount);
+                const target = randTarget(state.digitCount);
+                const sols = solveQuickMath(nums, target, isLvl2);
+                if (sols.length > 0 && sols[0].diff === 0) {
+                    if (!isLvl2 || sols.some(s => s.usesExponent)) {
+                        return { numbers: nums, target, solutions: sols };
+                    }
+                }
+            }
+            const fallbackNums = state.digitCount === 4 ? [2, 3, 5, 7] : [2, 3, 4, 5, 6];
+            const fallbackTarget = state.digitCount === 4 ? 61 : 135;
+            return {
+                numbers: fallbackNums,
+                target: fallbackTarget,
+                solutions: solveQuickMath(fallbackNums, fallbackTarget, isLvl2)
+            };
+        }
+
+        function renderOrbs(nums, rolling = false) {
+            const container = document.getElementById('numbersOrbContainer');
+            container.innerHTML = '';
+            nums.forEach((n, i) => {
+                const color = ORB_COLORS[i % ORB_COLORS.length];
+                const orb = document.createElement('div');
+                orb.className = `gsp-orb w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br ${color} border-4 flex items-center justify-center text-white select-none ${rolling ? 'rolling-active' : ''}`;
+                orb.innerHTML = `<span class="text-4xl sm:text-5xl font-black">${n}</span>`;
+                container.appendChild(orb);
+            });
+        }
+
+        function startRandomSpin() {
+            if (state.isRolling) return;
+            state.isRolling = true;
+            clearInterval(state.timerInterval);
+
+            // Hide boxes and modals
+            document.getElementById('hintBox').classList.add('hidden');
+            document.getElementById('solutionBox').classList.add('hidden');
+            document.getElementById('timeUpModal').classList.add('hidden');
+            document.getElementById('timeUpModal').classList.remove('flex');
+
+            const targetEl = document.getElementById('targetNumberDisplay');
+            let ticks = 0;
+
+            const rollInterval = setInterval(() => {
+                ticks++;
+                renderOrbs(randDigits(state.digitCount), true);
+                targetEl.textContent = randTarget(state.digitCount);
+                playTone(320 + Math.random() * 400, 'triangle', 0.05, 0.08);
+
+                if (ticks >= 14) {
+                    clearInterval(rollInterval);
+                    const prob = generateProblem();
+                    state.numbers = prob.numbers;
+                    state.target = prob.target;
+                    state.allSolutions = prob.solutions;
+                    state.selectedSolutionIndex = 0;
+
+                    renderOrbs(state.numbers, false);
+                    targetEl.textContent = state.target;
+                    state.isRolling = false;
+
+                    playTone(523.25, 'sine', 0.12, 0.15);
+                    setTimeout(() => playTone(659.25, 'sine', 0.12, 0.15), 90);
+                    setTimeout(() => playTone(783.99, 'sine', 0.2, 0.15), 180);
+
+                    startTimer();
+                }
+            }, 85);
+        }
+
+        /********************************************************************
+         * 6. COUNTDOWN TIMER & TIME-UP POPUP PROMPT
+         ********************************************************************/
+        function startTimer() {
+            clearInterval(state.timerInterval);
+            state.isPaused = false;
+            document.getElementById('pauseIcon').className = 'fa-solid fa-pause text-xs';
+
+            const disp = document.getElementById('timerDisplay');
+            const unit = document.getElementById('timerUnitLabel');
+            const icon = document.getElementById('timerIcon');
+
+            if (state.timerDuration === 0) {
+                disp.textContent = 'ไม่จำกัด';
+                disp.className = 'text-xl sm:text-2xl font-extrabold text-sky-400';
+                unit.textContent = '';
+                icon.className = 'fa-solid fa-infinity text-sky-400 text-xl';
+                return;
+            }
+
+            state.timeLeft = state.timerDuration;
+            unit.textContent = 'วินาที';
+            updateTimerUI();
+
+            state.timerInterval = setInterval(() => {
+                if (state.isPaused || state.isRolling) return;
+                state.timeLeft--;
+                updateTimerUI();
+
+                if (state.timeLeft <= 5 && state.timeLeft > 0) {
+                    playTone(750, 'sine', 0.07, 0.12);
+                }
+
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    playTone(440, 'sawtooth', 0.2, 0.15);
+                    setTimeout(() => playTone(349.23, 'sawtooth', 0.3, 0.15), 180);
+                    openTimeUpModal();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const disp = document.getElementById('timerDisplay');
+            const icon = document.getElementById('timerIcon');
+            disp.textContent = state.timeLeft;
+
+            if (state.timeLeft <= 10) {
+                disp.className = 'font-mono text-3xl sm:text-4xl font-black text-rose-400';
+                icon.className = 'fa-solid fa-clock text-rose-400 text-xl animate-bounce';
+            } else {
+                disp.className = 'font-mono text-3xl sm:text-4xl font-black text-emerald-400';
+                icon.className = 'fa-solid fa-clock text-emerald-400 text-xl';
+            }
+        }
+
+        function togglePauseTimer() {
+            if (state.timerDuration === 0) return;
+            state.isPaused = !state.isPaused;
+            document.getElementById('pauseIcon').className = state.isPaused
+                ? 'fa-solid fa-play text-amber-400 text-xs'
+                : 'fa-solid fa-pause text-xs';
+        }
+
+        function openTimeUpModal() {
+            const modal = document.getElementById('timeUpModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function handleTimeUpChoice(choice) {
+            const modal = document.getElementById('timeUpModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            if (choice === 'solution') {
+                showSolutionBox();
+            } else if (choice === 'hint') {
+                showHintBox();
+            }
+            // If 'continue', simply closes modal so students can keep thinking
+        }
+
+        /********************************************************************
+         * 7. HINT & SOLUTION DISPLAY FOR PRIMARY STUDENTS
+         ********************************************************************/
+        function showHintBox() {
+            if (state.allSolutions.length === 0) return;
+            playTone(660, 'sine', 0.12);
+
+            const sol = state.allSolutions[0];
+            const firstStep = sol.steps[0];
+            const hintBox = document.getElementById('hintBox');
+            const hintContent = document.getElementById('hintContent');
+
+            // Mask numbers except exponent 2 or 3
+            const maskedEq = sol.exprHtml.replace(/\b\d+\b/g, (m, offset, str) => {
+                const prev = str.slice(Math.max(0, offset - 22), offset);
+                return prev.includes('math-exp') ? m : '<span class="text-amber-300">[?]</span>';
+            });
+
+            hintContent.innerHTML = `
+                <div class="bg-slate-900/90 border border-indigo-400/40 rounded-2xl p-4">
+                    <div class="text-xs font-bold text-indigo-300 mb-1">1. เริ่มต้นคู่แรกแบบนี้ก่อน:</div>
+                    <div class="text-sm text-slate-300 mb-2">${firstStep.desc}</div>
+                    <div class="text-2xl font-black text-white">${firstStep.lhsHtml} = <span class="text-amber-300">${firstStep.res}</span></div>
+                </div>
+                <div class="bg-slate-900/90 border border-indigo-400/40 rounded-2xl p-4">
+                    <div class="text-xs font-bold text-indigo-300 mb-1">2. โครงสร้างประโยคสัญลักษณ์:</div>
+                    <div class="text-sm text-slate-300 mb-2">ลองเติมตัวเลขที่เหลือลงในช่องว่าง</div>
+                    <div class="text-xl font-black text-indigo-200 tracking-wider">${maskedEq} = ${sol.resultValue}</div>
+                </div>
+            `;
+
+            hintBox.classList.remove('hidden');
+            hintBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showSolutionBox() {
+            if (state.allSolutions.length === 0) return;
+            clearInterval(state.timerInterval);
+            playTone(784, 'sine', 0.15);
+
+            const solBox = document.getElementById('solutionBox');
+            solBox.classList.remove('hidden');
+
+            renderSolutionIndex(0);
+            solBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function renderSolutionIndex(idx) {
+            state.selectedSolutionIndex = idx;
+            const sol = state.allSolutions[idx];
+            if (!sol) return;
+
+            const badge = document.getElementById('solutionMethodBadge');
+            if (sol.diff === 0) {
+                badge.className = 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-bold';
+                badge.textContent = sol.usesExponent ? '✓ คำตอบตรงเป๊ะ (ใช้เลขยกกำลัง)' : '✓ คำตอบตรงเป๊ะ (วิธีพื้นฐาน)';
+            } else {
+                badge.className = 'px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs sm:text-sm font-bold';
+                badge.textContent = `ค่าใกล้เคียงที่สุด: ได้ ${sol.resultValue} (ห่าง ${sol.diff})`;
+            }
+
+            // Render Steps
+            const stepContainer = document.getElementById('stepByStepContainer');
+            stepContainer.innerHTML = '';
+
+            sol.steps.forEach((st, i) => {
+                const isLast = i === sol.steps.length - 1;
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-2xl border-2 flex items-center justify-between gap-3 ${
+                    isLast ? 'bg-amber-500/15 border-amber-400' : 'bg-slate-900 border-slate-700'
+                }`;
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-xl ${isLast ? 'bg-amber-400 text-slate-950' : 'bg-slate-700 text-white'} font-black text-sm">
+                            ขั้นที่ ${i + 1}
+                        </span>
+                        <span class="text-sm sm:text-base text-slate-200 font-medium">${st.desc}</span>
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black text-white">
+                        ${st.lhsHtml} = <span class="${isLast ? 'text-emerald-400 underline' : 'text-amber-300'}">${st.res}</span>
+                    </div>
+                `;
+                stepContainer.appendChild(div);
+            });
+
+            // Full Equation
+            document.getElementById('fullEquationText').innerHTML = `${sol.exprHtml} = <span class="text-emerald-400">${sol.resultValue}</span>`;
+
+            // Alternative Solutions
+            const otherList = document.getElementById('otherWaysList');
+            otherList.innerHTML = '';
+            const limit = Math.min(state.allSolutions.length, 6);
+
+            for (let i = 0; i < limit; i++) {
+                const s = state.allSolutions[i];
+                const btn = document.createElement('button');
+                btn.onclick = () => renderSolutionIndex(i);
+                btn.className = `w-full text-left px-3 py-2 rounded-xl border text-sm font-bold transition flex items-center justify-between ${
+                    i === idx
+                        ? 'bg-sky-500/25 border-sky-400 text-white'
+                        : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
+                }`;
+                btn.innerHTML = `
+                    <span>วิธีที่ ${i + 1}: &nbsp; ${s.exprHtml} = ${s.resultValue}</span>
+                    ${s.usesExponent ? '<span class="text-xs text-amber-300">ใช้ a²,a³</span>' : ''}
+                `;
+                otherList.appendChild(btn);
+            }
+        }
+
+        /********************************************************************
+         * 8. CUSTOM PROBLEM INPUT MODAL
+         ********************************************************************/
+        function openCustomModal() {
+            document.getElementById('customNumbersInput').value = state.numbers.join(' ');
+            document.getElementById('customTargetInput').value = state.target;
+            document.getElementById('customModalError').classList.add('hidden');
+            const m = document.getElementById('customModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeCustomModal() {
+            const m = document.getElementById('customModal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function applyCustomProblem() {
+            const rawNums = document.getElementById('customNumbersInput').value.trim();
+            const rawTarget = parseInt(document.getElementById('customTargetInput').value, 10);
+            const errEl = document.getElementById('customModalError');
+
+            const nums = rawNums.split(/[\s,]+/).map(x => parseInt(x, 10)).filter(n => !isNaN(n) && n >= 1 && n <= 9);
+            if (nums.length !== 4 && nums.length !== 5) {
+                errEl.textContent = 'กรุณาป้อนตัวเลขโดด 4 หรือ 5 ตัวเท่านั้น';
+                errEl.classList.remove('hidden');
+                return;
+            }
+            if (isNaN(rawTarget) || rawTarget < 1 || rawTarget > 999) {
+                errEl.textContent = 'กรุณาป้อนคำตอบตั้งแต่ 1 ถึง 999';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            state.digitCount = nums.length;
+            state.numbers = nums;
+            state.target = rawTarget;
+            state.allSolutions = solveQuickMath(nums, rawTarget, state.level === 2);
+
+            document.getElementById('hintBox').classList.add('hidden');
+            document.getElementById('solutionBox').classList.add('hidden');
+            renderOrbs(state.numbers, false);
+            document.getElementById('targetNumberDisplay').textContent = state.target;
+
+            closeCustomModal();
+            startTimer();
+        }
+    </script>
+</body>
+</html>
