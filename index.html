@@ -35,6 +35,68 @@
                 inset 0 4px 15px rgba(255, 255, 255, 0.25);
         }
 
+        /* ขยายขนาดลูกบอลเต็มพื้นที่ซ้าย-ขวา และปรับตัวเลขด้านในให้ใหญ่เต็มขอบวงกลม (96% ของขนาดวงกลม) */
+        .gsp-orb-4 {
+            width: min(22.2vw, 28vh);
+            height: min(22.2vw, 28vh);
+        }
+        .gsp-orb-text-4 {
+            font-size: min(21.2vw, 26.8vh);
+            line-height: 0.85;
+        }
+        .gsp-orb-5 {
+            width: min(18vw, 25vh);
+            height: min(18vw, 25vh);
+        }
+        .gsp-orb-text-5 {
+            font-size: min(17.2vw, 24vh);
+            line-height: 0.85;
+        }
+
+        .gsp-target-card {
+            width: min(76vw, 360px);
+            height: min(28vw, 24vh);
+        }
+        .gsp-target-text-2 {
+            font-size: min(22vw, 19vh);
+            line-height: 0.85;
+        }
+        .gsp-target-text-3 {
+            font-size: min(17vw, 16vh);
+            line-height: 0.85;
+        }
+
+        @media (min-width: 1024px) {
+            .gsp-orb-4 {
+                width: min(17.2vw, 50vh);
+                height: min(17.2vw, 50vh);
+            }
+            .gsp-orb-text-4 {
+                font-size: min(16.5vw, 48vh);
+                line-height: 0.85;
+            }
+            .gsp-orb-5 {
+                width: min(13.8vw, 44vh);
+                height: min(13.8vw, 44vh);
+            }
+            .gsp-orb-text-5 {
+                font-size: min(13.2vw, 42vh);
+                line-height: 0.85;
+            }
+            .gsp-target-card {
+                width: min(21.5vw, 520px);
+                height: min(17.2vw, 50vh);
+            }
+            .gsp-target-text-2 {
+                font-size: min(13.2vw, 38vh);
+                line-height: 0.85;
+            }
+            .gsp-target-text-3 {
+                font-size: min(9.5vw, 29vh);
+                line-height: 0.85;
+            }
+        }
+
         /* Rolling Effect */
         @keyframes bounce-roll {
             0%, 100% { transform: translateY(0) scale(1); }
@@ -68,101 +130,113 @@
         }
     </style>
 </head>
-<body class="p-4 sm:p-6 flex items-center justify-center min-h-screen">
+<body class="p-1 sm:p-2 flex items-center justify-center min-h-screen lg:h-screen lg:overflow-hidden">
 
     <!-- =======================================================================
-         SCREEN 1: START MENU (หน้าแรกเลือกเลเวลและรูปแบบโจทย์อย่างง่าย)
+         SCREEN 1: START MENU (ขยายออกด้านข้างแบบจอกว้าง ไม่ต้องเลื่อนขึ้นลง)
     ======================================================================== -->
-    <main id="startScreen" class="max-w-3xl w-full bg-slate-800/95 border-2 border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl animate-pop">
+    <main id="startScreen" class="max-w-6xl w-full bg-slate-800/95 border-2 border-slate-700 rounded-3xl p-5 sm:p-7 shadow-2xl animate-pop">
         
-        <!-- Title Header -->
-        <div class="text-center mb-8">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 text-3xl font-black mx-auto mb-3 shadow-lg shadow-orange-500/20">
-                <i class="fa-solid fa-calculator"></i>
+        <!-- Title Header (Compact Horizontal) -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-5 mb-5 border-b border-slate-700">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-slate-950 text-3xl font-black shadow-lg shadow-orange-500/20 shrink-0">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div class="text-center sm:text-left">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        โปรแกรมสุ่มคิดเลขเร็ว GSP (ระดับประถมศึกษา)
+                    </h1>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        เลือกระดับความยาก จำนวนตัวเลข และเวลา แล้วกดเริ่มเข้าสู่กระดานได้ทันที
+                    </p>
+                </div>
             </div>
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-                โปรแกรมสุ่มคิดเลขเร็ว GSP
-            </h1>
-            <p class="text-slate-400 text-sm sm:text-base mt-1">
-                เลือกระดับที่ต้องการฝึกซ้อม แล้วกดเข้าสู่กระดานได้เลย
-            </p>
         </div>
 
-        <!-- Step 1: Choose Level -->
-        <div class="mb-6">
-            <label class="block text-sm sm:text-base font-bold text-amber-300 mb-3">
-                1. เลือกระดับความยาก (Level)
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Level 1 Card -->
-                <button id="cardLevel1" onclick="selectStartLevel(1)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-emerald-500/20 border-emerald-400 shadow-lg">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="px-3 py-1 rounded-full bg-emerald-400 text-slate-950 font-extrabold text-xs">LEVEL 1</span>
-                            <i id="checkLevel1" class="fa-solid fa-circle-check text-emerald-400 text-2xl"></i>
+        <!-- Widescreen 2-Column Options (Left: Level, Right: Digits & Timer) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 items-stretch">
+            
+            <!-- Left Column (7 cols): Step 1 Choose Level -->
+            <div class="lg:col-span-7 flex flex-col justify-between">
+                <label class="block text-base sm:text-lg font-bold text-amber-300 mb-3">
+                    1. เลือกระดับความยาก (Level)
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+                    <!-- Level 1 Card -->
+                    <button id="cardLevel1" onclick="selectStartLevel(1)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-emerald-500/20 border-emerald-400 shadow-lg">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-3 py-1 rounded-full bg-emerald-400 text-slate-950 font-extrabold text-xs">LEVEL 1</span>
+                                <i id="checkLevel1" class="fa-solid fa-circle-check text-emerald-400 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-white">โหมดพื้นฐาน</h3>
+                            <p class="text-sm text-slate-300 mt-1">ใช้เฉพาะ บวก (+) ลบ (−) คูณ (×) หาร (÷)</p>
                         </div>
-                        <h3 class="text-xl font-extrabold text-white">โหมดพื้นฐาน</h3>
-                        <p class="text-sm text-slate-300 mt-1">ใช้เฉพาะ บวก (+) ลบ (−) คูณ (×) หาร (÷)</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-emerald-300 tracking-widest">
-                        + &nbsp; − &nbsp; × &nbsp; ÷
-                    </div>
-                </button>
-
-                <!-- Level 2 Card -->
-                <button id="cardLevel2" onclick="selectStartLevel(2)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-slate-900/60 border-slate-700 hover:border-slate-500">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-extrabold text-xs">LEVEL 2</span>
-                            <i id="checkLevel2" class="fa-regular fa-circle text-slate-500 text-2xl"></i>
+                        <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-emerald-300 tracking-widest">
+                            + &nbsp; − &nbsp; × &nbsp; ÷
                         </div>
-                        <h3 class="text-xl font-extrabold text-white">โหมดเพิ่มยกกำลังสอง-สาม</h3>
-                        <p class="text-sm text-slate-300 mt-1">มีตัวช่วยยกกำลังสอง (a²) และกำลังสาม (a³)</p>
+                    </button>
+
+                    <!-- Level 2 Card -->
+                    <button id="cardLevel2" onclick="selectStartLevel(2)" class="text-left p-5 rounded-2xl border-4 transition flex flex-col justify-between bg-slate-900/60 border-slate-700 hover:border-slate-500">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-extrabold text-xs">LEVEL 2</span>
+                                <i id="checkLevel2" class="fa-regular fa-circle text-slate-500 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-white">โหมดยกกำลังสอง-สาม</h3>
+                            <p class="text-sm text-slate-300 mt-1">มีตัวช่วยยกกำลังสอง (a²) และกำลังสาม (a³)</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-amber-300 tracking-widest">
+                            + − × ÷ และ a² , a³
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column (5 cols): Step 2 Digits & Step 3 Timer -->
+            <div class="lg:col-span-5 flex flex-col justify-between space-y-5">
+                <!-- Step 2: Choose Digit Count -->
+                <div>
+                    <label class="block text-base sm:text-lg font-bold text-sky-300 mb-3">
+                        2. เลือกจำนวนตัวเลขโจทย์
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="cardDigit4" onclick="selectStartDigits(4)" class="p-3.5 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md">
+                            <div class="text-2xl font-black">4 ตัวเลข</div>
+                            <div class="text-xs text-sky-200 mt-0.5">ผลลัพธ์ 2 หลัก (10–99)</div>
+                        </button>
+
+                        <button id="cardDigit5" onclick="selectStartDigits(5)" class="p-3.5 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500">
+                            <div class="text-2xl font-black">5 ตัวเลข</div>
+                            <div class="text-xs text-slate-400 mt-0.5">ผลลัพธ์ 3 หลัก (100–999)</div>
+                        </button>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-slate-700/80 text-2xl font-black text-amber-300 tracking-widest">
-                        + − × ÷ และ a² , a³
+                </div>
+
+                <!-- Step 3: Choose Timer -->
+                <div>
+                    <label class="block text-base sm:text-lg font-bold text-purple-300 mb-3">
+                        3. เวลาในการคิดต่อข้อ
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button onclick="selectStartTimer(30)" id="timerBtn30" class="py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                            30 วินาที
+                        </button>
+                        <button onclick="selectStartTimer(45)" id="timerBtn45" class="py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                            45 วินาที
+                        </button>
+                        <button onclick="selectStartTimer(60)" id="timerBtn60" class="py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white">
+                            60 วินาที
+                        </button>
+                        <button onclick="selectStartTimer(0)" id="timerBtn0" class="py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
+                            ไม่จับเวลา
+                        </button>
                     </div>
-                </button>
+                </div>
             </div>
-        </div>
 
-        <!-- Step 2: Choose Digit Count (4 or 5 Numbers) -->
-        <div class="mb-6">
-            <label class="block text-sm sm:text-base font-bold text-sky-300 mb-3">
-                2. เลือกจำนวนตัวเลขโจทย์
-            </label>
-            <div class="grid grid-cols-2 gap-4">
-                <button id="cardDigit4" onclick="selectStartDigits(4)" class="p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md">
-                    <div class="text-2xl sm:text-3xl font-black">4 ตัวเลข</div>
-                    <div class="text-xs sm:text-sm text-sky-200 mt-1">ผลลัพธ์ 2 หลัก (10 – 99)</div>
-                </button>
-
-                <button id="cardDigit5" onclick="selectStartDigits(5)" class="p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500">
-                    <div class="text-2xl sm:text-3xl font-black">5 ตัวเลข</div>
-                    <div class="text-xs sm:text-sm text-slate-400 mt-1">ผลลัพธ์ 3 หลัก (100 – 999)</div>
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 3: Choose Timer -->
-        <div class="mb-8">
-            <label class="block text-sm sm:text-base font-bold text-purple-300 mb-3">
-                3. เวลาในการคิดต่อข้อ
-            </label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <button onclick="selectStartTimer(30)" id="timerBtn30" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
-                    30 วินาที
-                </button>
-                <button onclick="selectStartTimer(45)" id="timerBtn45" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
-                    45 วินาที
-                </button>
-                <button onclick="selectStartTimer(60)" id="timerBtn60" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white">
-                    60 วินาที
-                </button>
-                <button onclick="selectStartTimer(0)" id="timerBtn0" class="py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300">
-                    ไม่จับเวลา
-                </button>
-            </div>
         </div>
 
         <!-- Big Enter Game Button -->
@@ -175,107 +249,84 @@
 
 
     <!-- =======================================================================
-         SCREEN 2: SIMPLE & CLEAN GSP GAME BOARD (หน้ากระดานสุ่มตัวเลข)
+         SCREEN 2: SINGLE-SCREEN GSP GAME BOARD (รวมนาฬิกา ตัวเลขใหญ่ และปุ่มในหน้าเดียว)
     ======================================================================== -->
-    <main id="boardScreen" class="hidden max-w-5xl w-full space-y-5 animate-pop">
+    <main id="boardScreen" class="hidden w-full max-w-[99.5vw] lg:h-[97vh] flex flex-col justify-between gap-2 animate-pop">
 
-        <!-- Top Simple Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-800/90 border border-slate-700 rounded-2xl px-4 py-3 shadow-lg">
-            <!-- Back to Level Select -->
-            <button onclick="backToStartScreen()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm transition flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>เปลี่ยนเลเวล / ตั้งค่า</span>
-            </button>
-
-            <!-- Current Mode Badge -->
-            <div class="flex items-center gap-2">
-                <span id="boardLevelBadge" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm">
-                    Level 1: โหมดพื้นฐาน
-                </span>
-                <button id="btnRefTable" onclick="toggleRefTable()" class="hidden px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 font-bold text-sm transition">
-                    <i class="fa-solid fa-table-cells mr-1"></i> ดูค่ากำลัง 2, 3
-                </button>
-            </div>
-
-            <!-- Sound & Custom Problem -->
-            <div class="flex items-center gap-2">
-                <button onclick="openCustomModal()" class="px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs sm:text-sm font-medium transition" title="ครูตั้งโจทย์เอง">
-                    <i class="fa-solid fa-keyboard mr-1"></i> ตั้งโจทย์เอง
-                </button>
-                <button id="btnSound" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 text-emerald-400 flex items-center justify-center transition">
-                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Optional Reference Table for Level 2 (Squares & Cubes) -->
-        <div id="refTableBox" class="hidden bg-slate-800/95 border-2 border-amber-500/40 rounded-2xl p-4 shadow-lg animate-pop">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-bold text-amber-300"><i class="fa-solid fa-star mr-1"></i> ตารางช่วยจำค่ากำลังสอง (a²) และกำลังสาม (a³)</span>
-                <button onclick="toggleRefTable()" class="text-xs text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i> ซ่อนตาราง</button>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2 text-center text-sm">
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">2² = <b class="text-sky-300">4</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">3² = <b class="text-sky-300">9</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">4² = <b class="text-sky-300">16</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">5² = <b class="text-sky-300">25</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">6² = <b class="text-sky-300">36</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">7² = <b class="text-sky-300">49</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">8² = <b class="text-sky-300">64</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">9² = <b class="text-sky-300">81</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">2³ = <b class="text-amber-300">8</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">3³ = <b class="text-amber-300">27</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">4³ = <b class="text-amber-300">64</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">5³ = <b class="text-amber-300">125</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">6³ = <b class="text-amber-300">216</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">7³ = <b class="text-amber-300">343</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">8³ = <b class="text-amber-300">512</b></div>
-                <div class="bg-slate-900 p-2 rounded-lg border border-slate-700">9³ = <b class="text-amber-300">729</b></div>
-            </div>
-        </div>
-
-        <!-- MAIN GSP BOARD -->
-        <div class="bg-slate-800 border-4 border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <!-- MAIN GSP BOARD (รวมทุกอย่างไว้ในกรอบเดียว ไม่ต้องเลื่อนหน้าจอ) -->
+        <div class="flex-1 bg-slate-800 border-4 border-slate-700 rounded-3xl px-2 py-2 sm:px-4 sm:py-3 flex flex-col justify-between shadow-2xl overflow-hidden">
             
-            <!-- Timer Bar at Top of Board -->
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700">
-                <div class="text-sm sm:text-base font-bold text-slate-300" id="simpleRuleLabel">
-                    โจทย์ 4 ตัวเลข (ใช้ตัวเลขให้ครบทุกตัว)
+            <!-- 1. TOP BAR: ปุ่มกลับ + เลเวล + นาฬิกาจับเวลาขนาดใหญ่ตรงกลาง + ปุ่มเครื่องมือ -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-700 shrink-0">
+                
+                <!-- Left: Back & Level Info -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="backToStartScreen()" class="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold text-sm sm:text-base transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>เปลี่ยนเลเวล</span>
+                    </button>
+                    <span id="boardLevelBadge" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm sm:text-base">
+                        Level 1: โหมดพื้นฐาน
+                    </span>
+                    <span id="simpleRuleLabel" class="hidden xl:inline-block text-slate-300 font-bold text-sm ml-1">
+                        • โจทย์ 4 ตัวเลข
+                    </span>
                 </div>
 
-                <!-- Large Easy-to-Read Timer -->
-                <div class="flex items-center gap-3 bg-slate-950 px-5 py-2 rounded-2xl border border-slate-700">
-                    <i id="timerIcon" class="fa-solid fa-clock text-emerald-400 text-xl"></i>
-                    <span id="timerDisplay" class="font-mono text-3xl sm:text-4xl font-black text-emerald-400">60</span>
-                    <span id="timerUnitLabel" class="text-xs sm:text-sm text-slate-400">วินาที</span>
-                    <button id="btnPause" onclick="togglePauseTimer()" class="ml-2 w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center" title="หยุดเวลาชั่วคราว">
-                        <i id="pauseIcon" class="fa-solid fa-pause text-xs"></i>
+                <!-- Center: Prominent Countdown Timer (อยู่ในสายตาพร้อมตัวเลขเสมอ) -->
+                <div class="flex items-center gap-3 bg-slate-950 px-5 py-2 rounded-2xl border-2 border-slate-600 shadow-inner">
+                    <i id="timerIcon" class="fa-solid fa-clock text-emerald-400 text-2xl sm:text-3xl"></i>
+                    <span id="timerDisplay" class="font-mono text-4xl sm:text-5xl font-black text-emerald-400 leading-none">60</span>
+                    <span id="timerUnitLabel" class="text-sm sm:text-base font-bold text-slate-400">วินาที</span>
+                    <button id="btnPause" onclick="togglePauseTimer()" class="ml-1 w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center" title="หยุดเวลาชั่วคราว">
+                        <i id="pauseIcon" class="fa-solid fa-pause text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Right: Tools (Reference Table, Custom Problem, Fullscreen, Sound) -->
+                <div class="flex items-center gap-2">
+                    <button id="btnRefTable" onclick="toggleRefTable()" class="hidden px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 font-bold text-sm sm:text-base transition">
+                        <i class="fa-solid fa-table-cells mr-1"></i> ตาราง a², a³
+                    </button>
+                    <button onclick="openCustomModal()" class="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm sm:text-base font-bold transition" title="ครูตั้งโจทย์เอง">
+                        <i class="fa-solid fa-keyboard mr-1"></i> ตั้งโจทย์
+                    </button>
+                    <button onclick="toggleFullScreen()" class="px-3.5 py-2 rounded-xl bg-sky-600/30 hover:bg-sky-600/50 border border-sky-400/40 text-sky-200 text-sm sm:text-base font-bold transition flex items-center gap-1.5" title="ขยายเต็มจอ">
+                        <i id="fullscreenIcon" class="fa-solid fa-expand"></i>
+                        <span class="hidden sm:inline">เต็มจอ</span>
+                    </button>
+                    <button id="btnSound" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 text-emerald-400 flex items-center justify-center transition text-base">
+                        <i id="soundIcon" class="fa-solid fa-volume-high"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Numbers & Target Answer Display -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center py-4">
+            <!-- 2. CENTER STAGE: ลูกบอลตัวเลขสุ่มขนาดใหญ่พิเศษ + คำตอบเป้าหมายขนาดยักษ์ -->
+            <div class="flex-1 flex flex-col lg:flex-row items-center justify-between gap-2 lg:gap-2 my-auto py-1 px-0 sm:px-1 w-full">
                 
                 <!-- Number Orbs -->
-                <div class="lg:col-span-7 flex flex-col items-center">
-                    <span class="text-xs sm:text-sm font-bold text-slate-400 mb-3">ตัวเลขที่สุ่มได้</span>
-                    <div id="numbersOrbContainer" class="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
-                        <!-- Orbs injected by JS -->
+                <div class="w-full lg:flex-1 flex flex-col items-center justify-center">
+                    <span class="text-base sm:text-xl font-extrabold text-sky-300 mb-1 sm:mb-2 tracking-wide">
+                        <i class="fa-solid fa-circle-nodes mr-1.5"></i> ตัวเลขที่สุ่มได้ (ใช้ให้ครบทุกตัว)
+                    </span>
+                    <div id="numbersOrbContainer" class="w-full flex flex-nowrap items-center justify-between gap-1.5 sm:gap-2.5 px-1">
+                        <!-- Giant Orbs injected by JS -->
                     </div>
                 </div>
 
                 <!-- Equals Sign -->
-                <div class="lg:col-span-1 flex items-center justify-center">
-                    <span class="text-4xl sm:text-5xl font-black text-slate-500">=</span>
+                <div class="flex items-center justify-center shrink-0 px-0.5">
+                    <span class="text-5xl sm:text-7xl lg:text-8xl font-black text-slate-400 select-none leading-none">=</span>
                 </div>
 
-                <!-- Target Box -->
-                <div class="lg:col-span-4 flex flex-col items-center">
-                    <span class="text-xs sm:text-sm font-bold text-amber-400 mb-3">คำตอบที่ต้องการ</span>
-                    <div class="gsp-target-box w-52 sm:w-60 h-32 sm:h-36 rounded-3xl bg-gradient-to-br from-amber-400 to-orange-600 p-2 flex items-center justify-center">
-                        <div class="w-full h-full bg-slate-950 rounded-2xl flex items-center justify-center">
-                            <span id="targetNumberDisplay" class="text-6xl sm:text-7xl font-black text-amber-300 tracking-tight">
+                <!-- Giant Target Box -->
+                <div class="flex flex-col items-center justify-center shrink-0">
+                    <span class="text-base sm:text-xl font-extrabold text-amber-400 mb-1 sm:mb-2 tracking-wide">
+                        <i class="fa-solid fa-bullseye mr-1.5"></i> คำตอบที่ต้องการ
+                    </span>
+                    <div class="gsp-target-box gsp-target-card rounded-[2rem] bg-gradient-to-br from-amber-400 via-amber-500 to-orange-600 p-2 sm:p-2.5 flex items-center justify-center">
+                        <div class="w-full h-full bg-slate-950 rounded-[1.4rem] flex items-center justify-center px-2">
+                            <span id="targetNumberDisplay" class="gsp-target-text-2 font-black text-amber-300 tracking-tighter select-none">
                                 45
                             </span>
                         </div>
@@ -284,88 +335,138 @@
 
             </div>
 
-            <!-- Bottom Control Buttons (Clean & Big) -->
-            <div class="mt-8 pt-6 border-t border-slate-700 flex flex-wrap items-center justify-center gap-4">
+            <!-- 3. BOTTOM BAR: ปุ่มกดหลักขนาดใหญ่ อยู่ติดขอบล่างของกระดานเสมอ -->
+            <div class="pt-2 border-t border-slate-700 flex flex-wrap items-center justify-center gap-3 sm:gap-5 shrink-0">
                 
                 <!-- 1. Big Spin Button -->
-                <button id="btnSpinRandom" onclick="startRandomSpin()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/25 active:scale-95 transition flex items-center gap-3">
-                    <i class="fa-solid fa-shuffle text-2xl"></i>
+                <button id="btnSpinRandom" onclick="startRandomSpin()" class="px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-lg sm:text-2xl shadow-lg shadow-emerald-500/25 active:scale-95 transition flex items-center gap-3">
+                    <i class="fa-solid fa-shuffle text-xl sm:text-2xl"></i>
                     <span>สุ่มตัวเลขชุดใหม่</span>
                 </button>
 
                 <!-- 2. Guideline Hint Button -->
-                <button onclick="showHintBox()" class="px-5 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base sm:text-lg shadow-md active:scale-95 transition flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb text-amber-300"></i>
+                <button onclick="showHintBox()" class="px-6 py-3.5 sm:py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-base sm:text-xl shadow-md active:scale-95 transition flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-300 text-xl"></i>
                     <span>ใบ้แนวคิด</span>
                 </button>
 
                 <!-- 3. Show Solution Button -->
-                <button onclick="showSolutionBox()" class="px-5 py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-base sm:text-lg shadow-md active:scale-95 transition flex items-center gap-2">
-                    <i class="fa-solid fa-check-circle"></i>
+                <button onclick="showSolutionBox()" class="px-6 py-3.5 sm:py-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-base sm:text-xl shadow-md active:scale-95 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check-circle text-xl"></i>
                     <span>ดูเฉลย</span>
                 </button>
 
             </div>
         </div>
 
-        <!-- ===================================================================
-             HINT BOX (แสดงเมื่อกดปุ่ม "ใบ้แนวคิด")
-        ==================================================================== -->
-        <div id="hintBox" class="hidden bg-indigo-950/90 border-2 border-indigo-400 rounded-3xl p-6 shadow-xl animate-pop">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-lg sm:text-xl font-extrabold text-indigo-200 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb text-amber-300 text-2xl"></i>
-                    ไกด์ไลน์ช่วยคิด (ลองทำตามขั้นแรกนี้ดูนะ!)
-                </h3>
-                <button onclick="document.getElementById('hintBox').classList.add('hidden')" class="text-indigo-300 hover:text-white text-sm">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+    </main>
+
+
+    <!-- =======================================================================
+         MODAL 1: ตารางช่วยจำค่ากำลังสองและกำลังสาม (Popup ไม่ดันหน้าจอ)
+    ======================================================================== -->
+    <div id="refTableBox" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-800 border-4 border-amber-400 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl animate-pop">
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-700">
+                <span class="text-xl sm:text-2xl font-extrabold text-amber-300">
+                    <i class="fa-solid fa-star mr-2"></i> ตารางช่วยจำค่ากำลังสอง (a²) และกำลังสาม (a³)
+                </span>
+                <button onclick="toggleRefTable()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold">
+                    <i class="fa-solid fa-xmark mr-1"></i> ปิดตาราง
                 </button>
             </div>
-            <div id="hintContent" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xl sm:text-2xl">
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">2² = <b class="text-sky-300">4</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">3² = <b class="text-sky-300">9</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">4² = <b class="text-sky-300">16</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">5² = <b class="text-sky-300">25</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">6² = <b class="text-sky-300">36</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">7² = <b class="text-sky-300">49</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">8² = <b class="text-sky-300">64</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">9² = <b class="text-sky-300">81</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">2³ = <b class="text-amber-300">8</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">3³ = <b class="text-amber-300">27</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">4³ = <b class="text-amber-300">64</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">5³ = <b class="text-amber-300">125</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">6³ = <b class="text-amber-300">216</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">7³ = <b class="text-amber-300">343</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">8³ = <b class="text-amber-300">512</b></div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700">9³ = <b class="text-amber-300">729</b></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =======================================================================
+         MODAL 2: HINT BOX (เด้งกลางจอแบบไม่ต้องเลื่อนหน้าจอ)
+    ======================================================================== -->
+    <div id="hintBox" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-indigo-950 border-4 border-indigo-400 rounded-3xl max-w-5xl w-full p-6 sm:p-8 shadow-2xl animate-pop">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-indigo-800">
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-indigo-200 flex items-center gap-3">
+                    <i class="fa-solid fa-lightbulb text-amber-300 text-3xl"></i>
+                    ไกด์ไลน์ช่วยคิด (ลองทำตามขั้นแรกนี้ดูนะ!)
+                </h3>
+                <div class="flex items-center gap-3">
+                    <span id="hintProblemSummary" class="px-4 py-1.5 rounded-xl bg-slate-900 text-amber-300 font-black text-lg sm:text-xl border border-indigo-500/40"></span>
+                    <button onclick="closeHintBox()" class="px-4 py-2 rounded-xl bg-indigo-800 hover:bg-indigo-700 text-white font-bold text-base">
+                        <i class="fa-solid fa-xmark mr-1"></i> ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+            <div id="hintContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Populated by JS -->
             </div>
         </div>
+    </div>
 
-        <!-- ===================================================================
-             SOLUTION BOX (แสดงเมื่อกดปุ่ม "ดูเฉลย")
-        ==================================================================== -->
-        <div id="solutionBox" class="hidden bg-slate-800 border-4 border-amber-400 rounded-3xl p-6 shadow-2xl animate-pop">
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-700">
-                <h3 class="text-xl sm:text-2xl font-extrabold text-amber-300 flex items-center gap-2">
-                    <i class="fa-solid fa-chalkboard-user"></i>
-                    เฉลยวิธีคิดทีละขั้นตอน
-                </h3>
-                <span id="solutionMethodBadge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-bold">
-                    คำตอบตรงเป้าหมาย
-                </span>
+
+    <!-- =======================================================================
+         MODAL 3: SOLUTION BOX (เด้งกลางจอ แสดงทั้งโจทย์และวิธีทำในหน้าเดียว)
+    ======================================================================== -->
+    <div id="solutionBox" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-800 border-4 border-amber-400 rounded-3xl max-w-6xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 shadow-2xl animate-pop">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-700">
+                <div class="flex flex-wrap items-center gap-3">
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-amber-300 flex items-center gap-2.5">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        เฉลยวิธีคิดทีละขั้นตอน
+                    </h3>
+                    <span id="solutionProblemSummary" class="px-4 py-1.5 rounded-xl bg-slate-950 border border-slate-600 text-white font-black text-lg sm:text-xl"></span>
+                    <span id="solutionMethodBadge" class="px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-sm sm:text-base font-bold">
+                        คำตอบตรงเป้าหมาย
+                    </span>
+                </div>
+                <button onclick="closeSolutionBox()" class="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-extrabold text-base sm:text-lg">
+                    <i class="fa-solid fa-xmark mr-1"></i> ปิดเฉลย
+                </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <!-- Step-by-Step Easy Cards (7 cols) -->
-                <div class="lg:col-span-7 space-y-3" id="stepByStepContainer">
+                <div class="lg:col-span-7 space-y-3.5" id="stepByStepContainer">
                     <!-- Steps injected by JS -->
                 </div>
 
                 <!-- Summary Equation & Other Ways (5 cols) -->
                 <div class="lg:col-span-5 space-y-4">
-                    <div class="bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-4 text-center">
-                        <div class="text-xs text-slate-400 font-bold mb-1">ประโยคสัญลักษณ์รวม</div>
-                        <div id="fullEquationText" class="text-2xl sm:text-3xl font-black text-white py-1"></div>
+                    <div class="bg-slate-900 border-2 border-amber-500/40 rounded-2xl p-5 text-center">
+                        <div class="text-sm sm:text-base text-slate-400 font-bold mb-1">ประโยคสัญลักษณ์รวม</div>
+                        <div id="fullEquationText" class="text-3xl sm:text-4xl font-black text-white py-1"></div>
                     </div>
 
                     <div class="bg-slate-900/80 border border-slate-700 rounded-2xl p-4">
-                        <div class="text-xs font-bold text-sky-300 mb-2">
+                        <div class="text-sm sm:text-base font-bold text-sky-300 mb-2.5">
                             <i class="fa-solid fa-code-branch mr-1"></i> วิธีคิดแบบอื่นๆ (คลิกเพื่อสลับดู)
                         </div>
-                        <div id="otherWaysList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                        <div id="otherWaysList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
                             <!-- Alternative buttons -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-    </main>
+    </div>
 
 
     <!-- =======================================================================
@@ -491,6 +592,17 @@
             icon.className = state.soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-slate-400';
         }
 
+        function toggleFullScreen() {
+            const icon = document.getElementById('fullscreenIcon');
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+                if (icon) icon.className = 'fa-solid fa-compress';
+            } else {
+                document.exitFullscreen().catch(() => {});
+                if (icon) icon.className = 'fa-solid fa-expand';
+            }
+        }
+
         /********************************************************************
          * 3. START SCREEN SELECTION CONTROLS
          ********************************************************************/
@@ -521,11 +633,11 @@
             const d5 = document.getElementById('cardDigit5');
 
             if (count === 4) {
-                d4.className = 'p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
-                d5.className = 'p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
+                d4.className = 'p-3.5 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
+                d5.className = 'p-3.5 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
             } else {
-                d5.className = 'p-4 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
-                d4.className = 'p-4 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
+                d5.className = 'p-3.5 rounded-2xl border-4 transition text-center bg-sky-500/20 border-sky-400 text-white shadow-md';
+                d4.className = 'p-3.5 rounded-2xl border-4 transition text-center bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500';
             }
             playTone(580, 'sine', 0.08);
         }
@@ -535,9 +647,9 @@
             [30, 45, 60, 0].forEach(val => {
                 const btn = document.getElementById('timerBtn' + val);
                 if (val === sec) {
-                    btn.className = 'py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white';
+                    btn.className = 'py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-purple-500/25 border-purple-400 text-white';
                 } else {
-                    btn.className = 'py-3 px-4 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300';
+                    btn.className = 'py-3 px-2 rounded-xl border-2 font-bold text-sm sm:text-base transition bg-slate-900/60 border-slate-700 text-slate-300';
                 }
             });
             playTone(640, 'sine', 0.08);
@@ -553,16 +665,16 @@
             const ruleLabel = document.getElementById('simpleRuleLabel');
 
             if (state.level === 1) {
-                badge.className = 'px-3.5 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm';
+                badge.className = 'px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold text-sm sm:text-base';
                 badge.textContent = 'Level 1: โหมดพื้นฐาน (+ − × ÷)';
                 btnRef.classList.add('hidden');
-                document.getElementById('refTableBox').classList.add('hidden');
-                ruleLabel.textContent = `โจทย์ ${state.digitCount} ตัวเลข • ใช้ + , − , × , ÷ ให้ได้คำตอบ`;
+                closeRefTable();
+                ruleLabel.textContent = `• โจทย์ ${state.digitCount} ตัวเลข`;
             } else {
-                badge.className = 'px-3.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-sm';
-                badge.textContent = 'Level 2: โหมดยกกำลังสอง-สาม (a², a³)';
+                badge.className = 'px-3.5 py-2 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-sm sm:text-base';
+                badge.textContent = 'Level 2: ยกกำลังสอง-สาม (a², a³)';
                 btnRef.classList.remove('hidden');
-                ruleLabel.textContent = `โจทย์ ${state.digitCount} ตัวเลข • ใช้ + , − , × , ÷ และกำลังสอง (a²) หรือกำลังสาม (a³)`;
+                ruleLabel.textContent = `• โจทย์ ${state.digitCount} ตัวเลข (ใช้ a², a³ ได้)`;
             }
 
             startRandomSpin();
@@ -573,11 +685,26 @@
             document.getElementById('boardScreen').classList.add('hidden');
             document.getElementById('timeUpModal').classList.add('hidden');
             document.getElementById('timeUpModal').classList.remove('flex');
+            closeHintBox();
+            closeSolutionBox();
+            closeRefTable();
             document.getElementById('startScreen').classList.remove('hidden');
         }
 
         function toggleRefTable() {
-            document.getElementById('refTableBox').classList.toggle('hidden');
+            const box = document.getElementById('refTableBox');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                box.classList.add('flex');
+            } else {
+                closeRefTable();
+            }
+        }
+
+        function closeRefTable() {
+            const box = document.getElementById('refTableBox');
+            box.classList.add('hidden');
+            box.classList.remove('flex');
         }
 
         /********************************************************************
@@ -827,13 +954,25 @@
         function renderOrbs(nums, rolling = false) {
             const container = document.getElementById('numbersOrbContainer');
             container.innerHTML = '';
+
+            // ใช้คลาสคำนวณสัดส่วนตามขนาดหน้าจอ ให้วงกลมขยายเต็มพื้นที่และตัวเลขด้านในใหญ่เกือบเต็มวงกลม
+            const sizeClasses = nums.length === 4 ? 'gsp-orb-4' : 'gsp-orb-5';
+            const textClasses = nums.length === 4 ? 'gsp-orb-text-4' : 'gsp-orb-text-5';
+
             nums.forEach((n, i) => {
                 const color = ORB_COLORS[i % ORB_COLORS.length];
                 const orb = document.createElement('div');
-                orb.className = `gsp-orb w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br ${color} border-4 flex items-center justify-center text-white select-none ${rolling ? 'rolling-active' : ''}`;
-                orb.innerHTML = `<span class="text-4xl sm:text-5xl font-black">${n}</span>`;
+                orb.className = `gsp-orb ${sizeClasses} rounded-full bg-gradient-to-br ${color} border-4 sm:border-[6px] flex items-center justify-center text-white select-none shrink-0 overflow-hidden ${rolling ? 'rolling-active' : ''}`;
+                orb.innerHTML = `<span class="${textClasses} font-black drop-shadow-md flex items-center justify-center -translate-y-[3%]">${n}</span>`;
                 container.appendChild(orb);
             });
+        }
+
+        function updateTargetTextSize(val) {
+            const targetEl = document.getElementById('targetNumberDisplay');
+            const isThreeDigit = String(val).length >= 3;
+            targetEl.className = `${isThreeDigit ? 'gsp-target-text-3' : 'gsp-target-text-2'} font-black text-amber-300 tracking-tighter select-none`;
+            targetEl.textContent = val;
         }
 
         function startRandomSpin() {
@@ -841,19 +980,18 @@
             state.isRolling = true;
             clearInterval(state.timerInterval);
 
-            // Hide boxes and modals
-            document.getElementById('hintBox').classList.add('hidden');
-            document.getElementById('solutionBox').classList.add('hidden');
+            // Hide modals
+            closeHintBox();
+            closeSolutionBox();
             document.getElementById('timeUpModal').classList.add('hidden');
             document.getElementById('timeUpModal').classList.remove('flex');
 
-            const targetEl = document.getElementById('targetNumberDisplay');
             let ticks = 0;
 
             const rollInterval = setInterval(() => {
                 ticks++;
                 renderOrbs(randDigits(state.digitCount), true);
-                targetEl.textContent = randTarget(state.digitCount);
+                updateTargetTextSize(randTarget(state.digitCount));
                 playTone(320 + Math.random() * 400, 'triangle', 0.05, 0.08);
 
                 if (ticks >= 14) {
@@ -865,7 +1003,7 @@
                     state.selectedSolutionIndex = 0;
 
                     renderOrbs(state.numbers, false);
-                    targetEl.textContent = state.target;
+                    updateTargetTextSize(state.target);
                     state.isRolling = false;
 
                     playTone(523.25, 'sine', 0.12, 0.15);
@@ -883,7 +1021,7 @@
         function startTimer() {
             clearInterval(state.timerInterval);
             state.isPaused = false;
-            document.getElementById('pauseIcon').className = 'fa-solid fa-pause text-xs';
+            document.getElementById('pauseIcon').className = 'fa-solid fa-pause text-base';
 
             const disp = document.getElementById('timerDisplay');
             const unit = document.getElementById('timerUnitLabel');
@@ -891,9 +1029,9 @@
 
             if (state.timerDuration === 0) {
                 disp.textContent = 'ไม่จำกัด';
-                disp.className = 'text-xl sm:text-2xl font-extrabold text-sky-400';
+                disp.className = 'text-2xl sm:text-3xl font-extrabold text-sky-400';
                 unit.textContent = '';
-                icon.className = 'fa-solid fa-infinity text-sky-400 text-xl';
+                icon.className = 'fa-solid fa-infinity text-sky-400 text-2xl sm:text-3xl';
                 return;
             }
 
@@ -925,11 +1063,11 @@
             disp.textContent = state.timeLeft;
 
             if (state.timeLeft <= 10) {
-                disp.className = 'font-mono text-3xl sm:text-4xl font-black text-rose-400';
-                icon.className = 'fa-solid fa-clock text-rose-400 text-xl animate-bounce';
+                disp.className = 'font-mono text-4xl sm:text-5xl font-black text-rose-400 leading-none';
+                icon.className = 'fa-solid fa-clock text-rose-400 text-2xl sm:text-3xl animate-bounce';
             } else {
-                disp.className = 'font-mono text-3xl sm:text-4xl font-black text-emerald-400';
-                icon.className = 'fa-solid fa-clock text-emerald-400 text-xl';
+                disp.className = 'font-mono text-4xl sm:text-5xl font-black text-emerald-400 leading-none';
+                icon.className = 'fa-solid fa-clock text-emerald-400 text-2xl sm:text-3xl';
             }
         }
 
@@ -937,8 +1075,8 @@
             if (state.timerDuration === 0) return;
             state.isPaused = !state.isPaused;
             document.getElementById('pauseIcon').className = state.isPaused
-                ? 'fa-solid fa-play text-amber-400 text-xs'
-                : 'fa-solid fa-pause text-xs';
+                ? 'fa-solid fa-play text-amber-400 text-sm'
+                : 'fa-solid fa-pause text-sm';
         }
 
         function openTimeUpModal() {
@@ -961,7 +1099,7 @@
         }
 
         /********************************************************************
-         * 7. HINT & SOLUTION DISPLAY FOR PRIMARY STUDENTS
+         * 7. HINT & SOLUTION DISPLAY FOR PRIMARY STUDENTS (MODAL POPUPS)
          ********************************************************************/
         function showHintBox() {
             if (state.allSolutions.length === 0) return;
@@ -972,6 +1110,9 @@
             const hintBox = document.getElementById('hintBox');
             const hintContent = document.getElementById('hintContent');
 
+            document.getElementById('hintProblemSummary').textContent =
+                `โจทย์: ${state.numbers.join(' , ')}  ➔  คำตอบ: ${state.target}`;
+
             // Mask numbers except exponent 2 or 3
             const maskedEq = sol.exprHtml.replace(/\b\d+\b/g, (m, offset, str) => {
                 const prev = str.slice(Math.max(0, offset - 22), offset);
@@ -979,20 +1120,26 @@
             });
 
             hintContent.innerHTML = `
-                <div class="bg-slate-900/90 border border-indigo-400/40 rounded-2xl p-4">
-                    <div class="text-xs font-bold text-indigo-300 mb-1">1. เริ่มต้นคู่แรกแบบนี้ก่อน:</div>
-                    <div class="text-sm text-slate-300 mb-2">${firstStep.desc}</div>
-                    <div class="text-2xl font-black text-white">${firstStep.lhsHtml} = <span class="text-amber-300">${firstStep.res}</span></div>
+                <div class="bg-slate-900/90 border-2 border-indigo-400/40 rounded-2xl p-5">
+                    <div class="text-sm sm:text-base font-bold text-indigo-300 mb-1">1. เริ่มต้นคู่แรกแบบนี้ก่อน:</div>
+                    <div class="text-base sm:text-xl text-slate-200 mb-2">${firstStep.desc}</div>
+                    <div class="text-3xl sm:text-4xl md:text-5xl font-black text-white">${firstStep.lhsHtml} = <span class="text-amber-300">${firstStep.res}</span></div>
                 </div>
-                <div class="bg-slate-900/90 border border-indigo-400/40 rounded-2xl p-4">
-                    <div class="text-xs font-bold text-indigo-300 mb-1">2. โครงสร้างประโยคสัญลักษณ์:</div>
-                    <div class="text-sm text-slate-300 mb-2">ลองเติมตัวเลขที่เหลือลงในช่องว่าง</div>
-                    <div class="text-xl font-black text-indigo-200 tracking-wider">${maskedEq} = ${sol.resultValue}</div>
+                <div class="bg-slate-900/90 border-2 border-indigo-400/40 rounded-2xl p-5">
+                    <div class="text-sm sm:text-base font-bold text-indigo-300 mb-1">2. โครงสร้างประโยคสัญลักษณ์:</div>
+                    <div class="text-base sm:text-xl text-slate-200 mb-2">ลองเติมตัวเลขที่เหลือลงในช่องว่าง</div>
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-black text-indigo-200 tracking-wider">${maskedEq} = ${sol.resultValue}</div>
                 </div>
             `;
 
             hintBox.classList.remove('hidden');
-            hintBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            hintBox.classList.add('flex');
+        }
+
+        function closeHintBox() {
+            const hintBox = document.getElementById('hintBox');
+            hintBox.classList.add('hidden');
+            hintBox.classList.remove('flex');
         }
 
         function showSolutionBox() {
@@ -1000,11 +1147,20 @@
             clearInterval(state.timerInterval);
             playTone(784, 'sine', 0.15);
 
+            document.getElementById('solutionProblemSummary').textContent =
+                `โจทย์: ${state.numbers.join(' , ')}  =  ${state.target}`;
+
             const solBox = document.getElementById('solutionBox');
             solBox.classList.remove('hidden');
+            solBox.classList.add('flex');
 
             renderSolutionIndex(0);
-            solBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeSolutionBox() {
+            const solBox = document.getElementById('solutionBox');
+            solBox.classList.add('hidden');
+            solBox.classList.remove('flex');
         }
 
         function renderSolutionIndex(idx) {
@@ -1014,31 +1170,31 @@
 
             const badge = document.getElementById('solutionMethodBadge');
             if (sol.diff === 0) {
-                badge.className = 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-bold';
+                badge.className = 'px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-sm sm:text-base font-bold';
                 badge.textContent = sol.usesExponent ? '✓ คำตอบตรงเป๊ะ (ใช้เลขยกกำลัง)' : '✓ คำตอบตรงเป๊ะ (วิธีพื้นฐาน)';
             } else {
-                badge.className = 'px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs sm:text-sm font-bold';
+                badge.className = 'px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 text-sm sm:text-base font-bold';
                 badge.textContent = `ค่าใกล้เคียงที่สุด: ได้ ${sol.resultValue} (ห่าง ${sol.diff})`;
             }
 
-            // Render Steps
+            // Render Steps (Large Font for Classroom)
             const stepContainer = document.getElementById('stepByStepContainer');
             stepContainer.innerHTML = '';
 
             sol.steps.forEach((st, i) => {
                 const isLast = i === sol.steps.length - 1;
                 const div = document.createElement('div');
-                div.className = `p-4 rounded-2xl border-2 flex items-center justify-between gap-3 ${
+                div.className = `p-5 rounded-2xl border-2 flex flex-wrap items-center justify-between gap-4 ${
                     isLast ? 'bg-amber-500/15 border-amber-400' : 'bg-slate-900 border-slate-700'
                 }`;
                 div.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="px-3 py-1 rounded-xl ${isLast ? 'bg-amber-400 text-slate-950' : 'bg-slate-700 text-white'} font-black text-sm">
+                        <span class="px-3.5 py-1.5 rounded-xl ${isLast ? 'bg-amber-400 text-slate-950' : 'bg-slate-700 text-white'} font-black text-base sm:text-lg">
                             ขั้นที่ ${i + 1}
                         </span>
-                        <span class="text-sm sm:text-base text-slate-200 font-medium">${st.desc}</span>
+                        <span class="text-lg sm:text-xl md:text-2xl text-slate-200 font-bold">${st.desc}</span>
                     </div>
-                    <div class="text-xl sm:text-2xl font-black text-white">
+                    <div class="text-2xl sm:text-3xl md:text-4xl font-black text-white">
                         ${st.lhsHtml} = <span class="${isLast ? 'text-emerald-400 underline' : 'text-amber-300'}">${st.res}</span>
                     </div>
                 `;
@@ -1057,14 +1213,14 @@
                 const s = state.allSolutions[i];
                 const btn = document.createElement('button');
                 btn.onclick = () => renderSolutionIndex(i);
-                btn.className = `w-full text-left px-3 py-2 rounded-xl border text-sm font-bold transition flex items-center justify-between ${
+                btn.className = `w-full text-left px-4 py-3 rounded-xl border text-base sm:text-lg font-bold transition flex items-center justify-between ${
                     i === idx
                         ? 'bg-sky-500/25 border-sky-400 text-white'
                         : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
                 }`;
                 btn.innerHTML = `
                     <span>วิธีที่ ${i + 1}: &nbsp; ${s.exprHtml} = ${s.resultValue}</span>
-                    ${s.usesExponent ? '<span class="text-xs text-amber-300">ใช้ a²,a³</span>' : ''}
+                    ${s.usesExponent ? '<span class="text-xs sm:text-sm text-amber-300">ใช้ a²,a³</span>' : ''}
                 `;
                 otherList.appendChild(btn);
             }
@@ -1110,10 +1266,10 @@
             state.target = rawTarget;
             state.allSolutions = solveQuickMath(nums, rawTarget, state.level === 2);
 
-            document.getElementById('hintBox').classList.add('hidden');
-            document.getElementById('solutionBox').classList.add('hidden');
+            closeHintBox();
+            closeSolutionBox();
             renderOrbs(state.numbers, false);
-            document.getElementById('targetNumberDisplay').textContent = state.target;
+            updateTargetTextSize(state.target);
 
             closeCustomModal();
             startTimer();
